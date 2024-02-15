@@ -6,6 +6,6 @@ connection = mysql.createConnection({
     user: "ProjectNotes",
     password: "Notes123",
     database: "ProjectNotes"
-})
+});
 
 module.exports = connection; 

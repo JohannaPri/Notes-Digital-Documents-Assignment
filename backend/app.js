@@ -20,7 +20,7 @@ app.get('/notes', (req, res) => {
     connection.connect((err) => {
         if (err) console.log('err', err);
 
-        let query = 'SELECT * FROM notes';
+        let query = 'SELECT * FROM notes WHERE deleted = 0';
 
         connection.query(query, (err, data) => {
             if (err) console.log('err', err);
@@ -31,11 +31,30 @@ app.get('/notes', (req, res) => {
     })
 });
 
-app.post('/notes', (req, res) => {
+app.get('/notes/user/:id', (req, res) => {
+
+    let userId = req.params.id;
+
+    connection.connect((err) => {
+        if (err) console.log('err', err);
+
+        let query = 'SELECT * FROM notes WHERE deleted = 0 AND userId = ?';
+        let values = [userId];
+
+        connection.query(query, values, (err, data) => {
+            if (err) console.log('err', err);
+
+            console.log('notes', data);
+            res.json(data);
+        })
+    })
+});
+
+app.post('/notes/add', (req, res) => {
 
     let title = req.body.title;
     let text = req.body.text;
-    let userId = req.body.userId; // skall skapas ett random userId
+    let userId = req.body.userId;
 
     connection.connect((err) => {
         if (err) console.log('err', err);
@@ -52,7 +71,26 @@ app.post('/notes', (req, res) => {
     })
 });
 
-app.patch('/note/:id', (req, res) => {
+app.get('/note/view/:id', (req, res) => {
+
+    let noteId = req.params.id;
+
+    connection.connect((err) => {
+        if (err) console.log('err', err);
+
+        let query = 'SELECT title, text FROM notes WHERE id = ?';
+        let values = [noteId];
+
+        connection.query(query, values, (err, data) => {
+            if (err) console.log('err', err);
+
+            console.log('note', data);
+            res.json(data);
+        })
+    })    
+})
+
+app.patch('/note/edit/:id', (req, res) => {
 
     let title = req.body.title;
     let text = req.body.text;
@@ -75,7 +113,7 @@ app.patch('/note/:id', (req, res) => {
     })
 });
 
-app.delete('/note/:id', (req, res) => {
+app.delete('/note/delete/:id', (req, res) => {
 
     let noteId = req.params.id;
 

@@ -3,3 +3,143 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.form-wrapper {
+  padding: 20px; 
+  list-style: none;
+  min-width: 65%;
+  align-items: center;
+  background-color: lightgray;
+}
+
+.title {
+  width: auto;
+}
+
+textarea {
+  min-width: 100%;
+  min-height: 250px;
+}
+
+.submit-btn {
+  display: block;
+  margin-top: 5px;
+  width: 100%;
+  padding: 5px;
+}
+
+.btn {
+  margin-top: 5px;
+  width: 100%;
+  padding: 5px;
+  display: none;
+}
+
+.small-text {
+  font-size: .8rem;
+  color: #333;
+}
+
+.view {
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.title-text {
+  text-align: center;
+}
+
+li { background: gray; }
+li:nth-child(odd) { background: darkgray; }
+li:hover { background-color: rgba(0, 0, 0, 0.800); color: white; transition: .4s ease-in-out; }
+
+.note-list {
+  padding: 20px; 
+  list-style: none;
+  min-width: 65%;
+  align-items: center;
+}
+
+.note {
+  display: flex;
+  padding: 5px;
+  padding-left: 12px;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.btn-group {
+  padding: 5px;
+}
+
+.view-button, .edit-button, .delete-button, .logout-btn {
+  margin: 5px;
+  padding: 3px;
+}
+
+.wrapper {
+  display: none;
+}
+
+.login {
+  display: block;
+}
+
+.login-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 5rem;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  background-color: lightgray;
+  color: black;
+  border-radius: 20px;
+  height: 150px;
+  width: 450px;
+  margin: 0 auto;
+  margin-top: 2rem;
+  border: 3px solid black;
+  cursor: pointer;
+  transition: .2s ease-in-out;
+}
+
+.logout-btn {
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background-color: darkgrey;
+}
+
+.user-dropdown {
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10rem;
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+

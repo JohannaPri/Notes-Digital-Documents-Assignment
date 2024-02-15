@@ -1,15 +1,5 @@
 const apiURL = 'http://localhost:3000';
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     const noteList = document.getElementById('note-list');
-
-//     fetch(`${apiURL}/notes`)
-//     .then(res => res.json())
-//     .then(data => {
-//         console.log('DATA:', data);
-//     })
-// })
-
 export async function getNotes() {
     try {
         const response = await fetch(`${apiURL}/notes`);

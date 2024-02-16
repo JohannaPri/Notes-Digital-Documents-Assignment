@@ -8,6 +8,17 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+h1 {
+  font-size: 2.3rem;
+  letter-spacing: 0.1rem;
+}
+
+h2, h3 {
+  font-size: 1.9rem;
+  letter-spacing: 0.1rem;
+  margin-bottom: 10px;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
@@ -27,11 +38,30 @@ body {
 
 .title {
   width: auto;
+  border-radius: 7px;
+  border: 2px solid lightgray;
+  text-indent: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 textarea {
   min-width: 100%;
   min-height: 250px;
+  border-radius: 8px;
+  border: 2px solid lightgray;
+  text-indent: 5px;
+  margin-top: 3px;
+}
+
+#label-title {
+  letter-spacing: 0.05rem;
+  margin-left: 3px;
+}
+
+#label-content {
+  letter-spacing: 0.05rem;
+  margin-left: 5px;
 }
 
 .submit-btn {
@@ -39,6 +69,12 @@ textarea {
   margin-top: 5px;
   width: 100%;
   padding: 5px;
+  border-radius: 8px;
+  border: 2px solid lightgray;
+  background-color: white;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  
 }
 
 .btn {
@@ -46,11 +82,19 @@ textarea {
   width: 100%;
   padding: 5px;
   display: none;
+  border-radius: 8px;
+  border: 2px solid lightgray;
+  background-color: white;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
 }
 
 .small-text {
   font-size: .8rem;
   color: #333;
+  margin-left: 3px;
+  margin-top: 1px;
+  letter-spacing: 0.02rem;
 }
 
 .view {
@@ -87,9 +131,24 @@ li:hover { background-color: rgba(0, 0, 0, 0.800); color: white; transition: .4s
   padding: 5px;
 }
 
-.view-button, .edit-button, .delete-button, .logout-btn {
+.view-button, .edit-button, .delete-button {
   margin: 5px;
   padding: 3px;
+  border-radius: 8px;
+  border: 2px solid white;
+  background-color: white;
+  letter-spacing: 0.08rem;
+  cursor: pointer;
+}
+
+.logout-btn {
+  margin: 5px;
+  padding: 4px;
+  border-radius: 8px;
+  border: 2px solid darkgray;
+  background-color: darkgrey;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
 }
 
 .wrapper {

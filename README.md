@@ -46,10 +46,28 @@ I have during this assignment been using following components:
 
 --- 
 
+## API - documentation 
+
+Below you can see the EndPoints that are used to create Notes:
+
+- `GET /notes`: Retrieve all documents that are created. 
+
+- `GET /notes/user/:id`: Retrieve all documents created by a specifik user. 
+
+- `POST /notes/add`: Create new documents.
+
+- `GET /note/view/:id`: View a specific document, by using that document's ID. 
+
+- `PATCH /note/edit/:id`: Edit a specific document, by using that document's ID. 
+
+- `DELETE /note/delete/:id`: Delete a specifik document by using it's ID. 
+
+---
+
 ### Why Notes?
 
-Notes is built to be a website that is easy and simple for
-everyone to use and to create digital documents. 
+Notes is built to be a website that makes it easy and simple to create digital document's online, but it's also meant to be for everyone to use. 
+ 
 
 Notes is there for you, for whatever you need it to be. It might be to remember your shopping list or to brainstorm or to just write down whats on your mind. 
 
@@ -88,7 +106,9 @@ Notes is there for you, for whatever you need it to be. It might be to remember 
 
 - **Remember, that it's not possible to create a new document without Title and Contenr. It's the same with Edit you can't press edit and remove title and content and then Save Note. That won't work and your document will not be created/saved**
 
-#### I hope you find Notes as easy and simple to create digital documents as I do! 
+---
+
+##### I hope you find Notes as easy and simple to create digital documents as I do! 
 
 ### Thanks for checking out my prototye. Hopefully Notes will be of use to you!
 

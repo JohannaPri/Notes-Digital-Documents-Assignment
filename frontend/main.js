@@ -1,9 +1,10 @@
+// Import CSS and necessary modules
 import './style.css'
 import { getNotes, getNotesByUserId } from './getNotes.js';
 import { getNoteById, updateNoteById } from './editNote.js';
 import { deleteNote } from './deleteNote.js';
 
-
+// HTML structure
 document.querySelector('#app').innerHTML = `
 <div class="login-wrapper" id="login-wrapper">
   <div class="user-dropdown">
@@ -18,7 +19,7 @@ document.querySelector('#app').innerHTML = `
 </div>
   <div class="wrapper" id="wrapper">
   <h1>My Notes</h1>
-  <div class=logout-btn-wrapper">
+  <div class="logout-btn-wrapper">
     <button id="logout-btn" class="logout-btn">Log Out</button>
   </div>
   <ul id="note-list" class="note-list">
@@ -42,72 +43,80 @@ document.querySelector('#app').innerHTML = `
         <br>
         <button class="submit-btn" id="submit-button" type="submit">Add Note</button>
       </form>
-      <button class="btn" id="button" type="button">Add Note</button>
+      <button class="btn" id="back-button" type="button">Close View</button>
+      <button class="btn" id="save-button" type="button">Save Note</button>
     </div>
   </div>
 `;
 
+// API URL
 const apiURL = 'http://localhost:3000';
 
+// Event listeners
 document.addEventListener('DOMContentLoaded', async function () {
-const noteH2 = document.getElementById('note-h2');
-const selectUserElement = document.getElementById('users');
-const loginBtn = document.getElementById('login-btn');
-const logoutBtn = document.getElementById('logout-btn');
-const viewWrapper = document.getElementById('wrapper');
-const loginWrapper = document.getElementById('login-wrapper');
+  // Element references
+  const noteH2 = document.getElementById('note-h2');
+  const selectUserElement = document.getElementById('users');
+  const loginBtn = document.getElementById('login-btn');
+  const logoutBtn = document.getElementById('logout-btn');
+  const viewWrapper = document.getElementById('wrapper');
+  const loginWrapper = document.getElementById('login-wrapper');
 
-loginBtn.addEventListener('click', function() {
-  const admin = {
-    userId: 'aa77f32b-9ead-4b5e-ae20-2867423cf2ad',
-    username: 'Admin'
+  // Sign-in button click event
+  loginBtn.addEventListener('click', function() {
+    const admin = {
+      userId: 'aa77f32b-9ead-4b5e-ae20-2867423cf2ad',
+      username: 'Admin'
+    }
+
+    const johanna = {
+      userId: '6ca9c7a4-11da-4962-9fbb-172ea5a5aef1',
+      username: 'Johanna'
+    }
+
+    const selectedUser = selectUserElement.value;
+    if (selectedUser === 'admin') {
+      localStorage.setItem('user', JSON.stringify(admin));
+    } else {
+      localStorage.setItem('user', JSON.stringify(johanna));
+    }
+
+    checkLoggedIn(); // Check login status
+  });
+
+  checkLoggedIn(); // Check login status
+
+  // Logout button click event
+  logoutBtn.addEventListener('click', function() {
+    const loggedIn = localStorage.getItem('user') !== null;
+    if (loggedIn) {
+      localStorage.removeItem('user');
+      location.reload(); // Reload the page after logout
+    } else {
+      return;
+    }
+  });
+
+  // Function to check login status
+  function checkLoggedIn() {
+    const loggedIn = localStorage.getItem('user') !== null;
+    console.log(loggedIn);
+
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    const userId = loggedInUser ? loggedInUser.userId : null;
+
+    if (userId) {
+      renderNotes(userId); // Render notes if logged in
+      loginWrapper.style.display = 'none';
+      viewWrapper.style.display = 'flex';
+    } else {
+      console.log('User is not logged in!');
+      loginWrapper.style.display = 'flex';
+      viewWrapper.style.display = 'none';
+    }
   }
 
-  const johanna = {
-    userId: '6ca9c7a4-11da-4962-9fbb-172ea5a5aef1',
-    username: 'Johanna'
-  }
-
-  const selectedUser = selectUserElement.value;
-  if (selectedUser === 'admin') {
-    localStorage.setItem('user', JSON.stringify(admin));
-  } else {
-    localStorage.setItem('user', JSON.stringify(johanna));
-  }
-  
-  checkLoggedIn();
-});
-
-checkLoggedIn();
-
-logoutBtn.addEventListener('click', function() {
-  const loggedIn = localStorage.getItem('user') !== null;
-  if (loggedIn) {
-    localStorage.removeItem('user');
-    location.reload();
-  } else {
-    return;
-  }
-});
-
-function checkLoggedIn() {
-  const loggedIn = localStorage.getItem('user') !== null;
-  console.log(loggedIn);
-
-  const loggedInUser = JSON.parse(localStorage.getItem('user'));
-  const userId = loggedInUser ? loggedInUser.userId : null;
-
-  if (userId) {
-    renderNotes(userId);
-    loginWrapper.style.display = 'none';
-    viewWrapper.style.display = 'flex';
-  } else {
-    console.log('User is not logged in!');
-    loginWrapper.style.display = 'flex';
-    viewWrapper.style.display = 'none';
-  }
-}
-
+  // Form submission event
   const form = document.getElementById('note-form');
 
   form.addEventListener('submit', async function (event) {
@@ -117,9 +126,17 @@ function checkLoggedIn() {
 
     const userId = JSON.parse(localStorage.getItem('user')).userId;
 
+    const dataTitle = formData.get('title').trim();
+    const dataContent = formData.get('content').trim();
+
+    if (dataTitle.length === 0 || dataContent.length === 0) {
+        console.log('Title and/or content cannot be empty!');
+        return;
+    }
+
     const data = {
-      title: formData.get('title'),
-      text: formData.get('content'),
+      title: dataTitle,
+      text: dataContent,
       userId: userId
     };
 
@@ -133,36 +150,46 @@ function checkLoggedIn() {
       });
 
       if (response.ok) {
-        alert('Note created successfully!');
+        console.log('Note created successfully!');
         form.reset();
         renderNotes(userId);
       } else {
-        alert('An error occured when creating note!');
+        console.log('An error occurred when creating note!');
       }
     } catch (error) {
       console.error('Error: ', error);
     }
   });
 
+  // Function to render notes
   async function renderNotes(userId) {
     const noteList = document.getElementById('note-list');
     noteList.innerHTML = '';
     const submitButton = document.getElementById('submit-button');
-    const backBtn = document.getElementById('button');
+    const backBtn = document.getElementById('back-button');
     submitButton.textContent = 'Add Note';
     noteH2.textContent = 'Create New Note';
     backBtn.style.display = 'none';
     submitButton.style.display = 'block';
 
+    // Back button event listener
     backBtn.addEventListener('click', function() {
-      location.reload();
+      let formView = document.getElementById('note-form');
+      let viewData = document.getElementById('view');
+      formView.style.display = 'block';
+      viewData.style.display = 'none';
+      noteH2.textContent = 'Create New Note';
+      let backBtn = document.getElementById('back-button');
+      let submitBtn = document.getElementById('submit-button');
+      backBtn.style.display = 'none';
+      submitBtn.style.display = 'block';
     });
 
     try {
       const userName = await JSON.parse(localStorage.getItem('user')).username;
       const notes = await userName.toLowerCase() === 'admin' ? await getNotes() : await getNotesByUserId(userId);
-      //const notes = await getNotesByUserId(userId);
-
+      
+      // Loop through notes
       notes.forEach(note => {
         const li = document.createElement('li');
         li.classList.add('note');
@@ -171,18 +198,17 @@ function checkLoggedIn() {
         const btnGroup = document.createElement('div');
         btnGroup.classList.add('btn-group');
 
+        // View button
         const viewButton = document.createElement('button');
         viewButton.textContent = 'View';
         viewButton.classList.add('view-button');
-
         viewButton.addEventListener('click', function () {
-          let backBtn = document.getElementById('button');
+          let backBtn = document.getElementById('back-button');
           let submitBtn = document.getElementById('submit-button');
           backBtn.style.display = 'block';
           submitBtn.style.display = 'none';
 
           noteH2.textContent = 'View Note';
-          backBtn.textContent = 'Close View';
 
           let formView = document.getElementById('note-form');
           let viewData = document.getElementById('view');
@@ -197,13 +223,15 @@ function checkLoggedIn() {
           viewDataContent.textContent = note.text;
         });
 
+        // Edit button
         const editButton = document.createElement('button');
+        const updateButton = document.getElementById('save-button');
         editButton.textContent = 'Edit';
         editButton.classList.add('edit-button');
-
         editButton.addEventListener('click', async function() {
           noteH2.textContent = 'Edit Note';
-          submitButton.textContent = 'Save';
+          submitButton.style.display = 'none';
+          updateButton.style.display = 'block';
 
           const noteById = await getNoteById(note.id);
           const titleInput = document.getElementById('title');
@@ -212,25 +240,32 @@ function checkLoggedIn() {
             titleInput.value = note.title;
             textArea.value = note.text;
 
-            submitButton.addEventListener('click', async function(event) {
-              event.preventDefault();
-
+            updateButton.addEventListener('click', async function() {
               const updatedData = {
                 title: titleInput.value,
                 text: textArea.value
               };
+              console.log(updatedData.title.length);
+              console.log(updatedData.text.length);
+              if (updatedData.title.length === 0 || updatedData.text.length === 0) {
+                console.log('Title and/or content cannot be empty!');
+                return;
+            }
               await updateNoteById(note.id, updatedData);
               titleInput.value = '';
               textArea.value = '';
-              renderNotes(userId);
+              submitButton.style.display = 'block';
+              updateButton.style.display = 'none';
+              await renderNotes(userId);
+              location.reload();
             });
           }
         });
 
+        // Delete button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('delete-button');
-
         deleteButton.addEventListener('click', function() {
           deleteNote(note.id);
           renderNotes(userId);
@@ -242,12 +277,10 @@ function checkLoggedIn() {
         btnGroup.appendChild(deleteButton);
 
         noteList.appendChild(li);
-
       });
     } catch (error) {
       console.error('Error: ', error);
     }
   }
 });
-
 

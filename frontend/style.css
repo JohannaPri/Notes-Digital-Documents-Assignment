@@ -203,3 +203,18 @@ li:hover { background-color: rgba(0, 0, 0, 0.800); color: white; transition: .4s
   width: 100%;
 }
 
+#render-create {
+  display: block;
+}
+
+#render-view {
+  display: none;
+}
+
+#render-edit {
+  display: none;
+}
+
+#data-content-text {
+  white-space: pre-line;
+}

@@ -23,10 +23,13 @@ app.get('/notes', (req, res) => {
         let query = 'SELECT * FROM notes WHERE deleted = 0';
 
         connection.query(query, (err, data) => {
-            if (err) console.log('err', err);
-
-            console.log('notes', data);
-            res.json(data);
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json(data);
+            }
         })
     })
 });
@@ -42,10 +45,14 @@ app.get('/notes/user/:id', (req, res) => {
         let values = [userId];
 
         connection.query(query, values, (err, data) => {
-            if (err) console.log('err', err);
 
-            console.log('notes', data);
-            res.json(data);
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json(data);
+            }
         })
     })
 });
@@ -63,10 +70,14 @@ app.post('/notes/add', (req, res) => {
         let values = [title, text, userId];
 
         connection.query(query, values, (err, data) => {
-            if (err) console.log('err', err);
 
-            console.log('notes', data);
-            res.json({message: 'Note saved'});
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json({message: 'Note saved'});
+            }
         })
     })
 });
@@ -82,10 +93,13 @@ app.get('/note/view/:id', (req, res) => {
         let values = [noteId];
 
         connection.query(query, values, (err, data) => {
-            if (err) console.log('err', err);
-
-            console.log('note', data);
-            res.json(data);
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json(data);
+            }
         })
     })    
 })
@@ -105,10 +119,13 @@ app.patch('/note/edit/:id', (req, res) => {
         let values = [title, text, noteId, noteId];
 
         connection.query(query, values, (err, data) => {
-            if (err) console.log('err', err);
-            
-            console.log('notes', data);
-            res.json(data);
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json(data);
+            }
         })
     })
 });
@@ -124,10 +141,13 @@ app.delete('/note/delete/:id', (req, res) => {
         let values = [noteId];
 
         connection.query(query, values, (err, data) => {
-            if (err) console.log('err', err);
-
-            console.log('notes', data);
-            res.json({message: 'Note deleted'});
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: 'Internal Server Error' });
+            } else {
+                console.log('notes', data);
+                res.json({message: 'Note deleted'});
+            }
         })
     })
 
